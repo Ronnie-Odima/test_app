@@ -1,0 +1,128 @@
+﻿1. Install xampp
+a) Find xampp installer from the zip folder in the email attachment
+b) cd to the xampp folder on linux terminal.
+c) Open terminal and type sudo chmod +x xampp-linux-x64-7.0.4-0-installer.run
+d) sudo ./xampp-linux-x64-7.0.4-0-installer.run (wait until installation finishes the launch it)
+e) cd /opt/lampp 
+f) sudo chmod 0777 etc/ -R
+	Xampp will be installed in /opt/lampp
+	
+2. Edit php.ini file to load pgsql extension
+a) navigate to /opt/lampp/etc/
+b) open the php.ini file
+c) search for extension=php_pgsql.dll
+d) remove the semicolon in front of that line to uncomment it
+e) save the the file
+
+3. check if the pgsql driver is loaded
+a) cd /opt/lampp/lib/php/extensions/no-debug-non-zts-20151012/
+b) check if php_pgsql.dll file exists
+c) If it doesn’t exist then , open terminal and type cd /opt/lampp/lib/php/extensions/
+d) sudo chmod 0777 no-debug-non-zts-20151012/ -R
+e) Then copy the php_pgsql.dll file from the xampp folder in the project folder and paste it in /opt/lampp/lib/php/extensions/no-debug-non-zts-20151012/
+
+4. Install Postgresql
+a) sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+b) wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+c) sudo apt-get update
+d) sudo apt-get install postgresql postgresql-contrib
+e) sudo -u postgres psql (to confirm postgresql is installed and enter postgresql terminal).
+f) postgres-# 
+g) Then type \password
+h) Enter new password which is ronnie376
+i) Re-type the new password
+
+5. Install pgAdmin III (Postgresql UI admin)
+a) sudo apt-get -y install postgresql postgresql-contrib pgadmin –allow-unauthenticated
+
+6. install php-pgsql
+a) sudo apt-get install php-pgsql
+
+7. Go to xampp UI and restart apache now.
+8. Launch the pgadmin III  by clicking its icon.
+9. create a new connection by clicking the charger like icon on the top left menu
+10. Name : postgresql  Host: localhost    maintanaceDb : postgres   username: postgres   password: ronnie376   then leave the rest as they are and press enter.
+11. Navigate to server groups → servers → (the newly created connection)
+12. Right click on it the click connect
+13. Then navigate to databases → postgres (our default database) → schemas → public → tables
+14. Click on tables then click on the sql icon on toolbar
+15. copy paste this sql into the command space then click on run button
+	
+CREATE TABLE public.tbl_due_listing
+(
+  id bigint NOT NULL DEFAULT nextval('tbl_due_listing_id_seq'::regclass),
+  c_id bigint NOT NULL DEFAULT nextval('tbl_due_listing_c_id_seq'::regclass),
+  total_amount integer NOT NULL,
+  amount_paid integer NOT NULL,
+  due_date text NOT NULL,
+  cleared integer NOT NULL DEFAULT 0
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.tbl_due_listing
+  OWNER TO postgres;
+GRANT ALL ON TABLE public.tbl_due_listing TO public;
+GRANT ALL ON TABLE public.tbl_due_listing TO postgres;
+
+
+16. then copy paste this as well and click run again
+
+CREATE TABLE public.tbl_profiles
+(
+  name text NOT NULL,
+  email text NOT NULL,
+  id_no text NOT NULL,
+  phone text NOT NULL,
+  gender text NOT NULL,
+  id bigint NOT NULL DEFAULT nextval('tbl_profiles_id_seq'::regclass),
+  CONSTRAINT pkey2 PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.tbl_profiles
+  OWNER TO postgres;
+GRANT ALL ON TABLE public.tbl_profiles TO public;
+GRANT ALL ON TABLE public.tbl_profiles TO postgres;
+
+
+
+
+
+
+
+
+
+17. then copy paste this too and press run again
+
+CREATE TABLE public.tbl_users
+(
+  id bigint NOT NULL DEFAULT nextval('tbl_users_id_seq'::regclass),
+  username text NOT NULL,
+  password text NOT NULL,
+  CONSTRAINT pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.tbl_users
+  OWNER TO postgres;
+GRANT ALL ON TABLE public.tbl_users TO public;
+GRANT ALL ON TABLE public.tbl_users TO postgres;
+
+18. open terminal and type sudo chmod 0777 /opt/lampp/htdocs/ -R
+
+19. Now copy paste the project folder to /opt/lampp/htdocs/
+
+19. Open browser and types http://locahost/debtors/welcome/configure_system
+
+
+
+
+
+
+**********END********************
+
+
+
